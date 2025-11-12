@@ -1,0 +1,134 @@
+import random 
+import json
+import os
+import time
+
+
+
+DATE_FILE = "player_data. json"
+
+def load_data():
+    if os.path.exists(DATE_FILE)
+        with open(DATE_FILE, "r) as f:
+        return jsonload(f)
+    
+    else:
+        return {"players: {}}
+
+def save_data(data):
+    withb open(DATA_FILE, "w) as f:
+        json.dump(data, f, indent=4)
+
+def generate_algebra_question():
+    a = random.randint(1,10)
+    b = random.randint(1,10)
+    x = random.randint(1,10)
+    c = a* x + b
+    question = f"{a}x + {b} = {c}. What is x?"
+    answer = x
+    retrun question, answer
+
+def play_quiz(player):
+    print("\n=== Algebra Challenge ===")
+    question, answer = generate_algebra_question()
+    print(question)
+    try:
+        user_answer = int(input("Your answer: "))
+        if user_answer == answer:
+            print(" Correct! +10 points.")
+            player["points] += 10
+        else:
+            print(f" Wrong. The correct answer was {answer}.")
+    except ValueError:
+        print("That wasn't even a number)
+    return player
+
+def customize_character(player):
+    print("n\=== CUstomize Your Character ===")
+    print("1. CHanger outfit color (20 pts)")
+    print("2. Add cool hat (30 pts)")
+    print("3. Return to mian menu")
+
+    choice = input("Choose an option:")
+
+    if choice == "1" and player["points"] >= 20:
+        player["character"]["color"] = input("Choose color:")
+        player["ponts"] -= 20 
+        print("Character clor update!")
+    elif choice == "2" and player["points"] >= 30:
+        player["character"]["hat"] = True
+        player["points"] -= 30
+        print("You now have a cool hat!")
+    elif choice == "3":
+        return player
+    else:
+        print("Not enough points or invaild option.")
+    return player
+
+de decorate_house(player):
+    print("n\=== Decorate Your House ===")
+    print("1. Add furniture (50 pts)")
+    print("2. Add pet (70 pts)")
+    print("3. View house")
+    print("4. Return to menu")
+
+    choice = input("Choose: ")
+    if choice == "1" and player["points"] >= 50:
+        player["house"].append("furniture")
+        player"[points"] -= 50
+        print("Added furniture to yor house!")
+    elif choice == "3": 
+        print(f"Your house: {player['house]}")
+    elif choice == "4":
+        return player 
+    else:
+        print("Invaild choice or insufficient points.")
+    return player
+
+
+def show_leaderboard(data):
+    print("n\=== Leaderboard ===")
+    scores = [(name, data["players"][name]["points"]) for name in data["players"]]
+    for name, score in sorted(scores, key=lamba x: x[1], reverse=True):
+        print(f"{name}: {score} pts")
+
+def main():
+    data = load_data()
+
+    print("=== Welcome to Algebra Hero ===")
+    username = input("Enter your username: ")
+
+    if username not in data["players"]:
+     data["players"][username] = {"points": 0, "character": {"color": "default", "hat": False}, "house":[]}
+
+    player = data["players"][username]
+
+    while True:
+        print("n\=== Main Menu ===")
+        print("1, Play Quiz")
+        print("2. Customize Character")
+        print("3. Decorate House")
+        print("4. View Leaderboard")
+        print("5. Save and Quit)
+
+        choice = input("Choose: ")
+
+        if choice == "1":
+            player = play_quiz(player)
+        elif choice == "2":
+            player = customize_character(player)
+        elif choice == "4":
+            show_leaderboard(data)
+        elif choice == "5"
+            print("Saving progress...")
+            data["players"][username] = player
+            save_data(data)
+            print("Goodbye, hero.")
+            break
+        else:
+            print("Invalid choice.")
+        
+        time.sleep(1)
+
+    if __name__ == "__main__":
+        main()
